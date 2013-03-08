@@ -4,21 +4,21 @@ ZJLogger
 a light-weight log tools for cocoa
 
 The log message is like:
-[TIME:<timestamp> PID:<process_id> TID:<thread_id> LVL:<log_msg_level>]\t<log_msg>
+[TIME:timestamp PID:process_id TID:thread_id LVL:log_msg_level] log_msg
 
 Description of the log message fields:
 
-<timestamp>	The date and time when the log message was generated. The
+timestamp	 The date and time when the log message was generated. The
 		timestamp has the following format: "yyyy/MM/dd HH:mm:ss".
 
-<process_id>	The ID of the process that generated the log message.
+process_id	The ID of the process that generated the log message.
 
-<thread_id>	The ID of the thread that generated the log message.
+thread_id	The ID of the thread that generated the log message.
 
-<log_msg_level>	The level of importance of the log message. See below for more
+log_msg_level	The level of importance of the log message. See below for more
 		details.
 
-<log_msg>	The contents of the log message.
+log_msg	The contents of the log message.
 
 -------------------------------------------------------------------------------
 LOG MESSAGE LEVELS
