@@ -22,7 +22,7 @@
 @property (nonatomic, strong) NSString *processID;
 @end
 
-NSString *const fileName = @"ServersManDiskLog.txt";
+NSString *const fileName = @"YourLogFileName.txt";
 
 
 @implementation ZJLogger
@@ -102,13 +102,13 @@ static ZJLogger *sharedLogger = nil;
         logLevel = kLogDebug;
     }
     
-
-#ifdef RELEASE
-    if (logLevel < kLogInfo)
-    {
-        logLevel = kLogInfo;
-    }
-#endif
+    
+    //#ifdef RELEASE
+    //    if (logLevel < kLogInfo)
+    //    {
+    //        logLevel = kLogInfo;
+    //    }
+    //#endif
     
     
     NSString *levelMsg = self.logLevelArray[logLevel];
@@ -121,17 +121,27 @@ static ZJLogger *sharedLogger = nil;
     NSString *thread = nil;
     mach_port_t another = mach_thread_self();
     thread = [NSString stringWithFormat:@"%d",another];
-
+    
     //nslog and persistence
-    [self logAndWrite:[NSArray arrayWithObjects:dateStr,self.processID,thread,levelMsg,msg, nil]];
-
+#ifdef DEBUG
+    [self log:[NSArray arrayWithObjects:dateStr,self.processID,thread,levelMsg,msg, nil] AndWrite:YES];
+#else
+    BOOL isWrite = logLevel >= kLogInfo?YES:NO;
+    [self log:[NSArray arrayWithObjects:dateStr,self.processID,thread,levelMsg,msg, nil] AndWrite:isWrite];
+#endif
+    
 }
 
-- (void)logAndWrite:(NSArray *)array
+- (void)log:(NSArray *)array AndWrite:(BOOL)isWrite
 {
-    NSString *logStr = [NSString stringWithFormat:@"TIME:%@ PID:%@ TID:%@ LVL:%@\t%@\n",array[0],array[1],array[2],array[3],array[4]];
+    NSString *logStr = [NSString stringWithFormat:@"[TIME:%@ PID:%@ TID:%@ LVL:%@]\t%@\n",array[0],array[1],array[2],array[3],array[4]];
     NSLog(@"%@",logStr);
-    [self performSelectorInBackground:@selector(writeToFile:) withObject:logStr];
+    if (isWrite)
+    {
+        [self performSelectorInBackground:@selector(writeToFile:) withObject:logStr];
+    }
+    
+    
 }
 
 - (void)writeToFile:(NSString *)msg
