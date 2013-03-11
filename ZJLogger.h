@@ -14,7 +14,8 @@ NSArray *logLevelMsg;
 @interface ZJLogger : NSObject
 
 
-+(id)shareInstanceWithLogFileFolderPath:(NSString *)filePath;
+//+(id)shareInstanceWithLogFileFolderPath:(NSString *)filePath;
++(id)shareInstance;
 - (void)logAtLevel:(ZJLogLevel)logLevel withFormat:(NSString *)format, ...;
 - (void)logAtLevel:(ZJLogLevel)logLevel withLogMsg:(NSString *)msg;
 @end

@@ -22,6 +22,9 @@
 @property (nonatomic, strong) NSString *processID;
 @end
 
+//your folderpath
+NSString *const folderPath = @"~/Desktop/";
+//file should be a txt
 NSString *const fileName = @"YourLogFileName.txt";
 
 
@@ -70,14 +73,24 @@ static ZJLogger *sharedLogger = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:NSApplicationWillTerminateNotification object:nil];
     [super dealloc];
 }
-
++(id)shareInstance
+{
+    @synchronized(self)
+    {
+        if (sharedLogger == nil)
+        {
+            sharedLogger = [[ZJLogger alloc] initWithLogFilePath:folderPath];
+        }
+    }
+    return sharedLogger;
+}
 +(id)shareInstanceWithLogFileFolderPath:(NSString *)filePath;
 {
     @synchronized(self)
     {
         if (sharedLogger == nil)
         {
-            sharedLogger = [[ZJLogger alloc] initWithLogFilePath:filePath];
+            sharedLogger = [[ZJLogger alloc] initWithLogFilePath:folderPath];
         }
     }
     return sharedLogger;
